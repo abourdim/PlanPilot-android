@@ -1,0 +1,127 @@
+/* ═══════════════════════════════════════════════════════════════════
+   SETTINGS — PlanPilot
+   Settings panel styling, consistent with modal.css.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.settings-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--cal-bg);
+  transition: background-color var(--tr-normal);
+}
+
+.settings-container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--sp-4) var(--sp-6) var(--sp-8);
+}
+
+/* ── Header ── */
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--sp-4);
+  margin-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.settings-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ── Form ── */
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Reuse form styles from modal.css:
+   .form-group, .form-group-toggle, .form-group-split,
+   .form-label, .form-input, .form-section-header,
+   .toggle-switch — all inherited from modal.css */
+
+/* ── Export / Import buttons ── */
+
+.settings-form .btn-secondary {
+  width: 100%;
+  justify-content: center;
+  padding: var(--sp-2) var(--sp-4);
+}
+
+/* ── Accordion ── */
+
+.settings-accordion-section {
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.settings-accordion-section:last-child {
+  border-bottom: none;
+}
+
+.settings-accordion-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-2);
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 600;
+  font-size: var(--font-size-base, 1rem);
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+
+.settings-accordion-header:hover {
+  background: var(--surface-hover, rgba(128, 128, 128, 0.08));
+}
+
+.settings-accordion-header .arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  font-size: 0.75em;
+  flex-shrink: 0;
+}
+
+.settings-accordion-header.open .arrow {
+  transform: rotate(90deg);
+}
+
+.settings-accordion-body {
+  padding: 0 var(--sp-2) var(--sp-3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+/* ── Scrollbar ── */
+
+.settings-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.settings-panel::-webkit-scrollbar-thumb {
+  background: var(--surface-border);
+  border-radius: 3px;
+}
+.settings-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 560px) {
+  .settings-container {
+    padding: var(--sp-3) var(--sp-4) var(--sp-6);
+  }
+
+  .settings-form .form-group-split {
+    grid-template-columns: 1fr;
+  }
+}

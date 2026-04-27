@@ -1,0 +1,670 @@
+/* ═══════════════════════════════════════════════════════════════════
+   LAYOUT — PlanPilot
+   ═══════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--cal-bg);
+  transition: background-color var(--tr-normal), color var(--tr-normal);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── App Shell ── */
+
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 6px 1fr;
+  grid-template-rows: 1fr auto;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+/* ── Resize Handle ── */
+
+.resize-handle {
+  grid-row: 1 / -1;
+  width: 6px;
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+  z-index: 50;
+  touch-action: none;
+}
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 2px;
+  width: 2px;
+  background: var(--surface-border);
+  transition: width .15s, left .15s, background .15s;
+}
+.resize-handle:hover::after,
+.resize-handle.dragging::after {
+  width: 3px;
+  left: 1.5px;
+  background: var(--accent);
+}
+
+/* ── Bismillah ── */
+
+.bismillah-banner {
+  display: flex; justify-content: center; align-items: center; gap: 10px;
+  font-family: var(--font-arabic); font-size: 14px; font-weight: 700;
+  color: var(--bism-color);
+  max-width: fit-content;
+  margin: var(--sp-2) auto;
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, .04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+  text-shadow: 0 0 16px currentColor;
+  transition: color var(--tr-slow), background var(--tr-normal);
+  z-index: var(--z-bismillah);
+  flex-shrink: 0;
+}
+[data-theme="light"] .bismillah-banner {
+  background: rgba(0, 0, 0, .03);
+  border-color: rgba(0, 0, 0, .06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+  text-shadow: none;
+}
+.bism-ornament {
+  font-size: 7px; opacity: .5;
+  animation: twinkle 3s ease-in-out infinite;
+}
+.bism-ornament:last-child { animation-delay: 1.5s; }
+@keyframes twinkle {
+  0%,100% { opacity: .2; transform: scale(.7); }
+  50%     { opacity: 1; transform: scale(1.3); }
+}
+
+.bismillah-banner.pulse-success { animation: bismHeartSuccess .6s ease; }
+.bismillah-banner.pulse-error   { animation: bismHeartError .6s ease; }
+
+@keyframes bismHeartSuccess {
+  0%   { opacity: .45; filter: brightness(1); }
+  30%  { opacity: 1; filter: brightness(1.8); text-shadow: 0 0 24px var(--accent); }
+  100% { opacity: .45; filter: brightness(1); }
+}
+@keyframes bismHeartError {
+  0%   { opacity: .45; }
+  30%  { opacity: .15; filter: brightness(.5); }
+  100% { opacity: .45; filter: brightness(1); }
+}
+
+/* (light theme for bismillah-banner handled above) */
+
+/* ── Sidebar ── */
+
+.sidebar {
+  grid-row: 1 / -1;
+  display: flex; flex-direction: column;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  overflow-y: auto;
+  z-index: var(--z-sidebar);
+  transition: background-color var(--tr-normal);
+}
+
+.sidebar-header {
+  padding: var(--sp-4);
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--sp-2);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  position: relative;
+}
+
+.logo-wrap {
+  width: 80px; height: 44px; flex-shrink: 0;
+  color: var(--accent);
+  transition: transform .08s ease-out;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+.logo-wrap svg { width: 100%; height: 100%; }
+
+.app-title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.focus-score-badge {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 3px solid var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--sidebar-text);
+  position: absolute;
+  right: var(--sp-4); top: var(--sp-4);
+  cursor: default;
+}
+.focus-score-badge::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 400;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+  z-index: 100;
+}
+.focus-score-badge:hover::after {
+  opacity: 1;
+}
+
+/* ── Main Content ── */
+
+.main-content {
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--surface-border);
+  background: var(--surface);
+  min-height: 44px;
+  gap: var(--sp-2);
+  transition: background-color var(--tr-normal);
+  overflow: hidden;
+}
+
+.toolbar-left, .toolbar-right {
+  display: flex; align-items: center; gap: var(--sp-2);
+  flex-shrink: 0;
+}
+.toolbar-right { overflow: visible; }
+
+.toolbar-center {
+  display: flex; align-items: center; gap: var(--sp-2);
+  font-weight: 600;
+  min-width: 0;
+}
+
+/* ── Calendar Container ── */
+
+.calendar-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── Footer ── */
+
+.app-footer {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: var(--sp-3) var(--sp-4);
+  opacity: .45;
+  transition: opacity .3s;
+  background: var(--sidebar-bg);
+}
+.app-footer:hover { opacity: .75; }
+
+.footer-text {
+  font-size: .68rem; color: var(--sidebar-text-muted);
+  letter-spacing: .03em;
+}
+.footer-text a {
+  color: var(--accent); text-decoration: none;
+  transition: opacity .2s;
+}
+.footer-text a:hover { opacity: .7; text-decoration: underline; }
+
+.hijri-date {
+  font-family: var(--font-arabic);
+  font-size: var(--font-size-xs);
+  color: var(--sidebar-text-muted);
+  opacity: .6;
+  direction: rtl;
+}
+
+/* ── Pixel Pet ── */
+
+.pixel-pet {
+  width: 32px; height: 32px;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  position: relative;
+}
+.pixel-pet img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  filter: invert(1);
+  transition: filter .3s;
+}
+[data-theme="light"] .pixel-pet img { filter: invert(0); }
+
+.pet-idle img {
+  animation: petFloat 3s ease-in-out infinite, petGlow 4s ease-in-out infinite;
+}
+@keyframes petFloat {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  25%     { transform: translateY(-3px) rotate(2deg); }
+  75%     { transform: translateY(1px) rotate(-1deg); }
+}
+@keyframes petGlow {
+  0%,100% { filter: invert(1) drop-shadow(0 0 0px transparent); }
+  50%     { filter: invert(1) drop-shadow(0 0 4px var(--accent)); }
+}
+[data-theme="light"] .pet-idle img {
+  animation: petFloat 3s ease-in-out infinite, petGlowLight 4s ease-in-out infinite;
+}
+@keyframes petGlowLight {
+  0%,100% { filter: invert(0) drop-shadow(0 0 0px transparent); }
+  50%     { filter: invert(0) drop-shadow(0 0 4px var(--accent)); }
+}
+
+.pet-happy img { animation: petHappy .5s ease; }
+@keyframes petHappy {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.3) rotate(10deg); }
+  100% { transform: scale(1); }
+}
+
+/* ── Modal Overlay ── */
+
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: var(--z-modal-overlay);
+  display: none;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+
+/* ── Buttons (shared) ── */
+
+button, .btn {
+  cursor: pointer;
+  border: none;
+  font-family: var(--font);
+  font-size: var(--font-size-base);
+  border-radius: 8px;
+  transition: all var(--tr-fast);
+}
+button:focus-visible, .btn:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  padding: var(--sp-2) var(--sp-4);
+  font-weight: 600;
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+}
+.btn-primary:hover { background: var(--accent-hover); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--surface-border);
+  padding: var(--sp-2) var(--sp-4);
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+}
+.btn-secondary:hover { background: var(--surface-hover); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  padding: var(--sp-2);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+}
+.btn-ghost:hover { background: var(--accent-light); }
+.btn-ghost svg { width: 20px; height: 20px; }
+
+.btn-icon { padding: var(--sp-1); }
+
+.btn:disabled, .btn[disabled] {
+  opacity: .4;
+  pointer-events: none;
+}
+
+/* ── Install PWA Banner ── */
+
+.install-banner {
+  display: none;
+  padding: var(--sp-2) var(--sp-4);
+  text-align: center;
+}
+.install-banner.visible { display: block; }
+
+/* ── Toast ── */
+
+.toast-container {
+  position: fixed;
+  bottom: var(--sp-4);
+  right: var(--sp-4);
+  z-index: var(--z-toast);
+  display: flex; flex-direction: column; gap: var(--sp-2);
+}
+.toast {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--surface-shadow);
+  border-radius: var(--event-radius);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--font-size-sm);
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .3s ease, transform .3s ease;
+  max-width: 320px;
+}
+.toast-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast-success { border-left: 3px solid #2ecc71; }
+.toast-error   { border-left: 3px solid #e74c3c; }
+.toast-warning { border-left: 3px solid #f39c12; }
+.toast-info    { border-left: 3px solid var(--accent); }
+
+/* ── Focus Indicator (toolbar) ── */
+
+.focus-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: 6px;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.focus-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+  transition: background var(--tr-normal);
+}
+
+.focus-dot.active {
+  background: #2ecc71;
+  animation: focusPulse 2s ease-in-out infinite;
+}
+
+.focus-dot.free {
+  background: var(--text-muted);
+  animation: none;
+}
+
+@keyframes focusPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(46, 204, 113, .5); }
+  50%      { opacity: .8; box-shadow: 0 0 0 4px rgba(46, 204, 113, 0); }
+}
+
+.focus-label {
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+/* .focus-now-prefix removed — dot+label only now */
+
+/* ── Find a Time Button ── */
+
+.btn-find-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  background: transparent;
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-find-time:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn-find-time svg { flex-shrink: 0; }
+
+/* ── Toolbar Status Group ── */
+
+.toolbar-status-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Pomodoro Timer (toolbar) ── */
+
+.pomodoro-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: var(--accent-light);
+  border: 1px solid var(--surface-border);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.pomodoro-ring {
+  flex-shrink: 0;
+}
+
+.pomodoro-time {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.pomodoro-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 11px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+}
+.pomodoro-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+/* ── Quick-Add Bar ── */
+
+.quick-add-bar {
+  position: relative;
+  z-index: 40;
+  background: var(--surface);
+  border-bottom: 1px solid var(--surface-border);
+  padding: var(--sp-2) var(--sp-3);
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+.quick-add-bar.quick-add-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.quick-add-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.quick-add-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.quick-add-input {
+  flex: 1;
+  background: var(--input-bg, transparent);
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  padding: var(--sp-2) var(--sp-3);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--font-size-base);
+  outline: none;
+  transition: border-color var(--tr-fast);
+}
+.quick-add-input:focus {
+  border-color: var(--accent);
+}
+.quick-add-input::placeholder {
+  color: var(--text-muted);
+}
+
+.quick-add-hint {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+  border: 1px solid var(--surface-border);
+  font-family: var(--font);
+  flex-shrink: 0;
+}
+
+/* ── UI Mode: Simple (hides advanced features) ── */
+
+/* Sidebar: hide filter tabs, search bar, dependency icons, habit progress */
+[data-ui-mode="simple"] .sidebar-tabs { display: none !important; }
+[data-ui-mode="simple"] .sidebar-search { display: none !important; }
+[data-ui-mode="simple"] .task-item-dep-icon { display: none !important; }
+[data-ui-mode="simple"] .habit-progress { display: none !important; }
+
+/* Sidebar task actions: hide Lock, Duplicate, View in Calendar in simple mode */
+[data-ui-mode="simple"] .task-hover-btn-duplicate { display: none !important; }
+[data-ui-mode="simple"] .task-hover-btn-view-cal { display: none !important; }
+
+/* Toolbar: hide Undo, Redo, Pomodoro (Find Time stays visible in simple mode) */
+[data-ui-mode="simple"] #btnUndo { display: none !important; }
+[data-ui-mode="simple"] #btnRedo { display: none !important; }
+[data-ui-mode="simple"] .pomodoro-timer { display: none !important; }
+
+/* Footer: hide Analytics, Weekly Review, and their container in simple mode */
+[data-ui-mode="simple"] #btnAnalytics { display: none !important; }
+[data-ui-mode="simple"] #btnWeeklyReview { display: none !important; }
+[data-ui-mode="simple"] .sidebar-footer-tools-extra { display: none !important; }
+
+/* Calendar: hide heatmap load colors, drag resize handles, drag ghost */
+[data-ui-mode="simple"] .day-load-low { background: transparent !important; }
+[data-ui-mode="simple"] .day-load-medium { background: transparent !important; }
+[data-ui-mode="simple"] .day-load-high { background: transparent !important; }
+[data-ui-mode="simple"] .cal-resize-handle { display: none !important; }
+[data-ui-mode="simple"] .cal-drag-ghost { display: none !important; }
+
+/* Modal: hide ONLY non-Reclaim fields in simple mode */
+/* Split up, Min/Max session, Scheduling hours, Visibility, Start date: VISIBLE (Reclaim-compatible) */
+/* Start mode */
+[data-ui-mode="simple"] #modalForm .form-group:has(#fieldStartMode) { display: none !important; }
+/* Energy section header + energy level */
+[data-ui-mode="simple"] #modalSectionAdvanced { display: none !important; }
+[data-ui-mode="simple"] #modalForm .form-group:has(#fieldEnergy) { display: none !important; }
+/* Dependencies */
+[data-ui-mode="simple"] #modalForm .form-group:has(#multiSelectDeps) { display: none !important; }
+/* Up Next toggle */
+[data-ui-mode="simple"] #modalForm .form-group-toggle:has(#fieldUpNext) { display: none !important; }
+/* Habit toggle + frequency */
+[data-ui-mode="simple"] #modalForm .form-group-toggle:has(#fieldHabit) { display: none !important; }
+[data-ui-mode="simple"] #modalForm #habitFreqField { display: none !important; }
+/* Template dropdown */
+[data-ui-mode="simple"] #modalForm #templateGroup { display: none !important; }
+
+/* Calendar events: keep priority colors in simple mode */
+
+/* Popover: hide Lock, Unlock, Duplicate, Log Work in simple mode */
+[data-ui-mode="simple"] .popover [data-action="lock"],
+[data-ui-mode="simple"] .popover [data-action="unlock"],
+[data-ui-mode="simple"] .popover [data-action="duplicate"],
+[data-ui-mode="simple"] .popover [data-action="logWork"] { display: none !important; }
+
+/* Settings panel: hide advanced sections in simple mode */
+/* Pomodoro section header + fields */
+[data-ui-mode="simple"] #sectionPomodoro { display: none !important; }
+[data-ui-mode="simple"] #settingsForm .form-group:has(#setPomodoroWork) { display: none !important; }
+[data-ui-mode="simple"] #settingsForm .form-group:has(#setPomodoroBreak) { display: none !important; }
+/* ICS import section header + button */
+[data-ui-mode="simple"] #sectionICS { display: none !important; }
+[data-ui-mode="simple"] #settingsForm .form-group:has(#settingsICSImport) { display: none !important; }
+/* Templates management section header + list + add button */
+[data-ui-mode="simple"] #sectionTemplates { display: none !important; }
+[data-ui-mode="simple"] #settingsTemplatesList { display: none !important; }
+[data-ui-mode="simple"] #settingsForm .form-group:has(#settingsAddTemplate) { display: none !important; }
+
+/* ── Responsive ── */
+
+@media (max-width: 900px) {
+  .btn-find-time-text { display: none; }
+  .focus-now-prefix { display: none; }
+  .pomodoro-time { font-size: 11px; }
+}
+
+@media (max-width: 768px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+  .resize-handle { display: none; }
+  .sidebar {
+    position: fixed;
+    left: calc(-1 * var(--sidebar-width));
+    top: 0; bottom: 0;
+    width: var(--sidebar-width);
+    transition: left var(--tr-normal);
+  }
+  .sidebar.open { left: 0; }
+  .logo-wrap { width: 60px; height: 33px; }
+}

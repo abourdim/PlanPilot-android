@@ -1,0 +1,269 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TASK EVENT — PlanPilot
+   Event block styling: absolute positioning, priority colors,
+   visibility indicators, hover/active states.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ═══════ EVENT BLOCK ═══════ */
+
+.cal-event {
+  position: absolute;
+  border-radius: var(--event-radius);
+  padding: var(--sp-1) var(--sp-2);
+  overflow: hidden;
+  cursor: pointer;
+  opacity: var(--event-opacity);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  transition: box-shadow var(--tr-fast), opacity var(--tr-fast), transform var(--tr-fast);
+  /* Small inset from column edges so events don't bleed into adjacent columns */
+  margin-left: 2px;
+  margin-right: 4px;
+  box-sizing: border-box;
+}
+
+/* ── Hover ── */
+
+.cal-event:hover {
+  opacity: 1;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .25);
+  transform: translateY(-1px);
+  z-index: 3;
+}
+
+/* ═══════ EVENT TEXT ═══════ */
+
+.cal-event-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.cal-event-time {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, .85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-event-duration {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, .7);
+  margin-top: auto;
+}
+
+/* ═══════ PRIORITY BADGE ═══════ */
+
+.cal-event-priority {
+  position: absolute;
+  top: var(--sp-1);
+  right: var(--sp-1);
+  background: rgba(0, 0, 0, .2);
+  border-radius: 4px;
+  padding: 2px 3px;
+  line-height: 1;
+  display: flex;
+  align-items: flex-end;
+}
+
+.cal-event-priority .priority-bars {
+  height: 13px;
+}
+
+.cal-event-priority .priority-bar {
+  background: rgba(255, 255, 255, .9) !important;
+}
+
+/* ═══════ VISIBILITY INDICATORS ═══════ */
+
+/* Busy indicator: small shield via pseudo-element */
+.cal-event::before {
+  content: '';
+  position: absolute;
+  top: var(--sp-1);
+  left: var(--sp-1);
+  width: 8px;
+  height: 10px;
+  opacity: .6;
+}
+
+/* Shield shape for busy */
+.cal-event:not(.is-free):not(.is-locked)::before {
+  /* Small shield icon via CSS */
+  background: rgba(255, 255, 255, .7);
+  clip-path: polygon(50% 0%, 100% 15%, 100% 65%, 50% 100%, 0% 65%, 0% 15%);
+}
+
+/* Free indicator: open / transparent style */
+.cal-event.is-free {
+  opacity: .6;
+  border: 2px dashed rgba(255, 255, 255, .5);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(255, 255, 255, .05) 4px,
+    rgba(255, 255, 255, .05) 8px
+  );
+}
+
+.cal-event.is-free::before {
+  /* No shield for free events */
+  display: none;
+}
+
+/* ═══════ LOCKED INDICATOR ═══════ */
+
+.cal-event.is-locked {
+  border: 2px solid rgba(255, 255, 255, .4);
+}
+
+.cal-event.is-locked::before {
+  /* Lock icon via clip-path — positioned top-right to avoid name overlap */
+  width: 10px;
+  height: 12px;
+  background: rgba(255, 255, 255, .8);
+  clip-path: polygon(
+    25% 45%, 25% 30%, 30% 15%, 50% 5%, 70% 15%, 75% 30%, 75% 45%,
+    90% 45%, 90% 100%, 10% 100%, 10% 45%
+  );
+  opacity: .8;
+  left: auto;
+  right: var(--sp-1);
+}
+
+/* ═══════ ACTIVE / RUNNING ═══════ */
+
+.cal-event.is-active {
+  opacity: 1;
+  animation: eventPulse 2s ease-in-out infinite;
+  z-index: 3;
+}
+
+@keyframes eventPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, .3);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, .15);
+  }
+}
+
+/* ── Highlight (sidebar click → scroll to) ── */
+
+.cal-event.cal-event-highlight {
+  animation: eventHighlight 2s ease;
+  z-index: 10;
+}
+
+@keyframes eventHighlight {
+  0%   { box-shadow: 0 0 0 0 var(--accent); transform: scale(1); }
+  15%  { box-shadow: 0 0 0 6px rgba(99, 102, 241, .4); transform: scale(1.03); }
+  30%  { box-shadow: 0 0 0 3px rgba(99, 102, 241, .3); transform: scale(1); }
+  45%  { box-shadow: 0 0 0 6px rgba(99, 102, 241, .25); transform: scale(1.02); }
+  60%  { box-shadow: 0 0 0 2px rgba(99, 102, 241, .15); transform: scale(1); }
+  100% { box-shadow: 0 0 0 0 transparent; transform: scale(1); }
+}
+
+/* ═══════ HABIT EVENT ═══════ */
+
+.cal-event.is-habit {
+  border-left: 3px solid rgba(255, 255, 255, .5);
+}
+
+/* ═══════ RESIZE HANDLE ═══════ */
+
+.cal-resize-handle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  cursor: s-resize;
+  background: rgba(255, 255, 255, .15);
+  border-radius: 0 0 var(--event-radius) var(--event-radius);
+  opacity: 0;
+  transition: opacity var(--tr-fast);
+}
+
+.cal-event:hover .cal-resize-handle {
+  opacity: 1;
+}
+
+.cal-resize-handle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 2px;
+  background: rgba(255, 255, 255, .6);
+  border-radius: 1px;
+}
+
+/* ═══════ DRAG-TO-MOVE ═══════ */
+
+.cal-event.move-dragging {
+  opacity: 0.3 !important;
+  pointer-events: none;
+}
+
+.cal-move-ghost {
+  position: absolute;
+  border: 2px solid var(--accent);
+  border-radius: var(--event-radius);
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-1) var(--sp-2);
+  box-sizing: border-box;
+  opacity: 0.85;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .3);
+}
+
+.cal-move-ghost-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.cal-move-ghost-time {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, .9);
+  font-weight: 600;
+}
+
+/* ═══════ DRAG-TO-CREATE GHOST ═══════ */
+
+/* ═══════ DRAG-TO-CREATE GHOST ═══════ */
+
+.cal-drag-ghost {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  border: 2px dashed var(--accent);
+  background: rgba(92, 107, 192, .2);
+  border-radius: var(--event-radius);
+  z-index: 5;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--accent);
+  box-sizing: border-box;
+}

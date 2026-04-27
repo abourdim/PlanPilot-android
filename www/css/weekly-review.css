@@ -1,0 +1,179 @@
+/* ═══════════════════════════════════════════════════════════════════
+   WEEKLY REVIEW — PlanPilot
+   Card-based layout for the weekly summary panel.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ═══════ PANEL ═══════ */
+
+.weekly-review-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--cal-bg);
+  padding: var(--sp-6);
+}
+
+.wr-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ═══════ HEADER ═══════ */
+
+.wr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-3);
+}
+
+.wr-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.wr-period {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--sp-6);
+}
+
+/* ═══════ GRID ═══════ */
+
+.wr-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-5);
+}
+
+@media (max-width: 700px) {
+  .wr-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ═══════ CARDS ═══════ */
+
+.wr-card {
+  background: var(--card-bg, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.wr-card-warn {
+  border-color: var(--danger, #ef4444);
+  border-left-width: 3px;
+}
+
+.wr-card-header {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wr-card-value {
+  font-size: var(--font-size-2xl, 2rem);
+  font-weight: 700;
+  color: var(--accent, var(--primary));
+}
+
+.wr-card-sub {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.wr-card-body {
+  flex: 1;
+}
+
+/* ═══════ LIST ═══════ */
+
+.wr-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.wr-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--border);
+  gap: var(--sp-2);
+}
+
+.wr-list-item:last-child {
+  border-bottom: none;
+}
+
+.wr-task-name {
+  font-size: var(--font-size-sm);
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wr-task-duration,
+.wr-task-due {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.wr-task-due {
+  color: var(--danger, #ef4444);
+}
+
+/* ═══════ EMPTY ═══════ */
+
+.wr-empty {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  font-style: italic;
+  padding: var(--sp-2) 0;
+}
+
+/* ═══════ ACTIONS ═══════ */
+
+.wr-actions {
+  margin-top: var(--sp-6);
+  display: flex;
+  justify-content: center;
+}
+
+.wr-actions .btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+/* ═══════ BLOCKED EVENT (calendar) ═══════ */
+
+.cal-event.is-blocked {
+  background-color: var(--blocked-bg, #6b7280) !important;
+  opacity: 0.7;
+  border-left: 3px solid var(--blocked-border, #4b5563);
+  cursor: default;
+}
+
+.cal-event.is-blocked .cal-event-title {
+  font-style: italic;
+}
+
+.cal-event.is-blocked .cal-event-priority {
+  display: none;
+}

@@ -1,0 +1,270 @@
+/* ═══════════════════════════════════════════════════════════════════
+   POPOVER — PlanPilot
+   Event popover anchored to calendar blocks.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.popover {
+  position: fixed;
+  z-index: var(--z-popover);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--surface-radius);
+  box-shadow: var(--surface-shadow);
+  width: 280px;
+  max-width: calc(100vw - 16px);
+  animation: popoverIn .15s ease;
+}
+
+@keyframes popoverIn {
+  from { opacity: 0; transform: scale(.95) translateY(-4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Header ── */
+
+.popover-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--sp-4) var(--sp-2);
+  gap: var(--sp-2);
+}
+
+.popover-title {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  word-break: break-word;
+  flex: 1;
+}
+
+.popover-close {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: all var(--tr-fast);
+  padding: 0;
+  line-height: 1;
+}
+.popover-close:hover {
+  background: var(--accent-light);
+  color: var(--text);
+}
+
+/* ── Info row (badges) ── */
+
+.popover-info {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-4) var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.popover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .03em;
+}
+
+.popover-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.popover-tag-locked {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.popover-tag-active {
+  background: rgba(46, 204, 113, .15);
+  color: #2ecc71;
+}
+
+/* ── Meta rows ── */
+
+.popover-meta {
+  padding: 0 var(--sp-4) var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.popover-meta-row {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.popover-meta-icon {
+  font-size: 12px;
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ═══════ ACTION BUTTONS ═══════ */
+
+.popover-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-4) var(--sp-3);
+  border-top: 1px solid var(--surface-border);
+}
+
+/* ── Classic mode: icon-only buttons ── */
+
+.popover-actions-classic {
+  gap: var(--sp-1);
+}
+
+.popover-btn-icon {
+  background: transparent;
+  border: 1px solid var(--surface-border);
+  color: var(--text-secondary);
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  padding: 0;
+}
+.popover-btn-icon:hover {
+  background: var(--accent-light);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.popover-btn-danger-icon:hover {
+  background: rgba(231, 76, 60, .12);
+  color: var(--p1);
+  border-color: var(--p1);
+}
+
+/* ── Enhanced mode: chip buttons ── */
+
+.popover-actions-enhanced {
+  gap: 6px;
+}
+
+.popover-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  letter-spacing: .02em;
+}
+.popover-chip:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.popover-chip-green {
+  background: rgba(46, 204, 113, .15);
+  color: #27ae60;
+}
+.popover-chip-green:hover {
+  background: rgba(46, 204, 113, .25);
+}
+
+.popover-chip-orange {
+  background: rgba(243, 156, 18, .15);
+  color: #e67e22;
+}
+.popover-chip-orange:hover {
+  background: rgba(243, 156, 18, .25);
+}
+
+.popover-chip-blue {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.popover-chip-blue:hover {
+  background: rgba(92, 107, 192, .2);
+}
+
+.popover-chip-red {
+  background: rgba(231, 76, 60, .12);
+  color: var(--p1);
+}
+.popover-chip-red:hover {
+  background: rgba(231, 76, 60, .2);
+}
+
+.popover-chip-default {
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+  border: 1px solid var(--surface-border);
+}
+.popover-chip-default:hover {
+  background: var(--accent-light);
+  color: var(--text);
+}
+
+/* Confirming state (delete double-click) */
+.popover-chip-confirming {
+  background: var(--p1) !important;
+  color: #fff !important;
+  animation: chipPulse .6s ease infinite alternate;
+}
+
+@keyframes chipPulse {
+  from { opacity: 1; }
+  to   { opacity: .7; }
+}
+
+/* ── Dark theme ── */
+
+[data-theme="dark"] .popover {
+  background: var(--surface);
+  border-color: var(--surface-border);
+}
+
+[data-theme="dark"] .popover-chip-green {
+  color: #2ecc71;
+}
+[data-theme="dark"] .popover-chip-orange {
+  color: #f39c12;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 480px) {
+  .popover {
+    width: calc(100vw - 16px);
+    left: 8px !important;
+  }
+}

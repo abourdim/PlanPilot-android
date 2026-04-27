@@ -1,0 +1,267 @@
+/* ═══════════════════════════════════════════════════════════════════
+   CALENDAR — PlanPilot
+   Week-view grid layout, time gutter, day headers, hour rows,
+   current-time indicator, and scrollable body.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Grid wrapper ── */
+
+.cal-grid {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--cal-bg);
+}
+
+/* ═══════ HEADER ROW ═══════ */
+
+.cal-header {
+  display: flex;
+  border-bottom: 2px solid var(--surface-border);
+  background: var(--surface);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.cal-header-gutter {
+  width: var(--cal-time-gutter);
+  flex-shrink: 0;
+  border-right: 1px solid var(--cal-grid);
+}
+
+.cal-header-day {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-2) var(--sp-1);
+  gap: 1px;
+  border-right: 1px solid var(--cal-grid);
+  transition: background-color var(--tr-fast);
+}
+
+.cal-header-day:last-child {
+  border-right: none;
+}
+
+.cal-header-day.is-today {
+  background: var(--cal-today-bg);
+}
+
+.cal-header-day-name {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: .04em;
+}
+
+.cal-header-day.is-today .cal-header-day-name {
+  color: var(--accent);
+}
+
+.cal-header-day-date {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.cal-header-day.is-today .cal-header-day-date {
+  color: var(--accent);
+}
+
+.cal-header-day-month {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+/* ═══════ BODY (scrollable) ═══════ */
+
+.cal-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.cal-body-inner {
+  display: flex;
+  position: relative;
+  min-height: calc(var(--cal-hour-height) * (var(--cal-end-hour) - var(--cal-start-hour)));
+  /* Fallback for browsers that can't calc CSS vars in min-height */
+  min-height: calc(60px * 15); /* 7..22 = 15 hours */
+}
+
+/* ═══════ TIME GUTTER ═══════ */
+
+.cal-time-gutter {
+  width: var(--cal-time-gutter);
+  flex-shrink: 0;
+  border-right: 1px solid var(--cal-grid);
+  position: relative;
+}
+
+.cal-time-label {
+  height: var(--cal-hour-height);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0 var(--sp-2);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  transform: translateY(-0.5em);
+  user-select: none;
+}
+
+/* ═══════ DAY COLUMNS ═══════ */
+
+.cal-columns {
+  flex: 1;
+  display: flex;
+  position: relative;
+}
+
+.cal-day-column {
+  flex: 1;
+  position: relative;
+  border-right: 1px solid var(--cal-grid);
+  transition: background-color var(--tr-fast);
+  overflow: hidden;
+}
+
+.cal-day-column:last-child {
+  border-right: none;
+}
+
+.cal-day-column.is-today {
+  background: var(--cal-today-bg);
+}
+
+/* ── Hour cells (grid lines) ── */
+
+.cal-hour-cell {
+  height: var(--cal-hour-height);
+  border-bottom: 1px solid var(--cal-grid);
+  position: relative;
+}
+
+/* Half-hour dashed line */
+.cal-hour-cell::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-bottom: 1px dashed var(--cal-grid);
+  opacity: .5;
+}
+
+/* ═══════ CURRENT TIME LINE ═══════ */
+
+.cal-time-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.cal-time-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 2px;
+  background: var(--time-line);
+}
+
+.cal-time-dot {
+  position: absolute;
+  left: -4px;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  background: var(--time-line);
+  border-radius: 50%;
+}
+
+/* ═══════ DEADLINE HEATMAP ═══════ */
+
+.cal-header-day.day-load-low {
+  background: rgba(46, 204, 113, .12);
+}
+.cal-header-day.day-load-medium {
+  background: rgba(243, 156, 18, .15);
+}
+.cal-header-day.day-load-high {
+  background: rgba(231, 76, 60, .18);
+}
+
+[data-theme="dark"] .cal-header-day.day-load-low {
+  background: rgba(46, 204, 113, .10);
+}
+[data-theme="dark"] .cal-header-day.day-load-medium {
+  background: rgba(243, 156, 18, .12);
+}
+[data-theme="dark"] .cal-header-day.day-load-high {
+  background: rgba(231, 76, 60, .15);
+}
+
+/* Keep today highlight priority over heatmap */
+.cal-header-day.is-today.day-load-low,
+.cal-header-day.is-today.day-load-medium,
+.cal-header-day.is-today.day-load-high {
+  position: relative;
+}
+
+/* ═══════ TOOLBAR DATE RANGE ═══════ */
+
+.toolbar-date-range {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  min-width: 200px;
+  text-align: center;
+}
+
+/* ═══════ VIEW TOGGLE ═══════ */
+
+.cal-view-toggle {
+  display: flex;
+  flex-direction: row;
+  border-radius: 999px;
+  border: 1px solid var(--surface-border);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cal-view-btn {
+  padding: 4px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  border-radius: 0;
+  white-space: nowrap;
+}
+
+.cal-view-btn:hover {
+  background: var(--surface-hover);
+}
+
+.cal-view-btn.active {
+  background: var(--accent);
+  color: var(--text-on-accent, #fff);
+  border-radius: 999px;
+}

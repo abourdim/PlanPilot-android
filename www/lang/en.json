@@ -1,0 +1,183 @@
+{
+  "app": {
+    "name": ""
+  },
+  "sidebar": {
+    "newTask": "",
+    "scheduled": "",
+    "doneScheduling": "",
+    "done": "",
+    "habits": "",
+    "settings": "",
+    "analytics": "",
+    "help": "",
+    "search": ""
+  },
+  "modal": {
+    "title": {
+      "create": "",
+      "edit": ""
+    },
+    "name": "",
+    "namePlaceholder": "",
+    "priority": "",
+    "duration": "",
+    "splitUp": "",
+    "minSession": "",
+    "maxSession": "",
+    "schedulingHours": "",
+    "schedulingType": {
+      "working": "",
+      "personal": "",
+      "custom": ""
+    },
+    "startHour": "",
+    "endHour": "",
+    "dueDate": "",
+    "startDate": "",
+    "startMode": "",
+    "startModes": {
+      "auto": "",
+      "manual": ""
+    },
+    "energy": "",
+    "energyLevels": {
+      "high": "",
+      "low": "",
+      "any": ""
+    },
+    "dependsOn": "",
+    "dependsOnNone": "",
+    "notes": "",
+    "notesPlaceholder": "",
+    "visibility": "",
+    "visibilityOptions": {
+      "busy": "",
+      "free": ""
+    },
+    "upNext": "",
+    "habit": "",
+    "habitFrequency": "",
+    "save": "",
+    "cancel": "",
+    "delete": ""
+  },
+  "actions": {
+    "start": "",
+    "stop": "",
+    "restart": "",
+    "lock": "",
+    "unlock": "",
+    "addTime": "",
+    "logWork": "",
+    "done": "",
+    "delete": "",
+    "confirm": "",
+    "edit": ""
+  },
+  "settings": {
+    "title": "",
+    "defaults": "",
+    "defaultPriority": "",
+    "defaultDuration": "",
+    "defaultSplitUp": "",
+    "defaultMinSession": "",
+    "defaultMaxSession": "",
+    "defaultSchedulingHours": "",
+    "defaultStartDelay": "",
+    "defaultDueDateOffset": "",
+    "defaultVisibility": "",
+    "startMode": "",
+    "theme": "",
+    "themes": {
+      "light": "",
+      "dark": ""
+    },
+    "uiMode": "",
+    "uiModes": {
+      "simple": "",
+      "advanced": ""
+    },
+    "simpleMode": "",
+    "advancedMode": "",
+    "language": "",
+    "notifications": "",
+    "notificationsEnabled": "",
+    "notificationLead": "",
+    "energy": "",
+    "peakStart": "",
+    "peakEnd": "",
+    "export": "",
+    "import": "",
+    "autoBackup": "",
+    "close": ""
+  },
+  "search": {
+    "placeholder": "",
+    "noResults": ""
+  },
+  "calendar": {
+    "today": "",
+    "prev": "",
+    "next": ""
+  },
+  "analytics": {
+    "title": "",
+    "focusTime": "",
+    "completionRate": "",
+    "timeByPriority": "",
+    "rescheduled": "",
+    "dailyBreakdown": "",
+    "focusScore": "",
+    "weeklyTrend": "",
+    "close": ""
+  },
+  "onboarding": {
+    "welcome": "",
+    "welcomeDesc": "",
+    "step1": "",
+    "step2": "",
+    "step3": "",
+    "finish": "",
+    "skip": "",
+    "keepSamples": "",
+    "yes": "",
+    "no": ""
+  },
+  "priority": {
+    "p1": "",
+    "p2": "",
+    "p3": "",
+    "p4": ""
+  },
+  "status": {
+    "scheduled": "",
+    "doneScheduling": "",
+    "done": ""
+  },
+  "empty": {
+    "title": "",
+    "message": "",
+    "cta": ""
+  },
+  "footer": {
+    "poweredBy": ""
+  },
+  "common": {
+    "on": "",
+    "off": "",
+    "yes": "",
+    "no": "",
+    "undo": "",
+    "redo": "",
+    "install": ""
+  },
+  "conflict": {
+    "warning": "",
+    "tasksPushed": ""
+  },
+  "notification": {
+    "upcoming": "",
+    "startsIn": ""
+  }
+}

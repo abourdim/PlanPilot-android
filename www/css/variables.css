@@ -1,0 +1,114 @@
+/* ═══════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — PlanPilot
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Priority Colors ── */
+  --p1: #e74c3c;
+  --p2: #f39c12;
+  --p3: #3498db;
+  --p4: #95a5a6;
+
+  /* ── Accent ── */
+  --accent: #5c6bc0;
+  --accent-hover: #4a59b0;
+  --accent-light: rgba(92, 107, 192, .12);
+
+  /* ── Sidebar ── */
+  --sidebar-bg: #1e2134;
+  --sidebar-text: #ffffff;
+  --sidebar-text-muted: rgba(255,255,255,.55);
+  --sidebar-hover: rgba(255,255,255,.08);
+  --sidebar-active: rgba(255,255,255,.14);
+  --sidebar-width: 320px;
+  --sidebar-min-width: 240px;
+  --sidebar-max-width: 500px;
+  --sidebar-icon-opacity: .7;
+
+  /* ── Calendar ── */
+  --cal-bg: #ffffff;
+  --cal-grid: #f0f0f0;
+  --cal-today-bg: rgba(92, 107, 192, .06);
+  --cal-hour-height: 60px;
+  --cal-start-hour: 7;
+  --cal-end-hour: 22;
+  --cal-time-gutter: 56px;
+
+  /* ── Surface / Cards ── */
+  --surface: #ffffff;
+  --surface-hover: #fafafa;
+  --surface-border: #e8e8e8;
+  --surface-shadow: 0 4px 24px rgba(0,0,0,.12);
+  --surface-radius: 12px;
+
+  /* ── Text ── */
+  --text: #1a1a2e;
+  --text-secondary: #555;
+  --text-muted: #999;
+  --text-on-accent: #fff;
+
+  /* ── Bismillah ── */
+  --bism-color: #c9a84c;
+
+  /* ── Event Blocks ── */
+  --event-radius: 8px;
+  --event-opacity: .85;
+
+  /* ── Spacing ── */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  /* ── Typography ── */
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  --font-arabic: 'Amiri', serif;
+  --font-size-xs: .65rem;
+  --font-size-sm: .75rem;
+  --font-size-base: .875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+
+  /* ── Transitions ── */
+  --tr-fast: 120ms ease;
+  --tr-normal: 200ms ease;
+  --tr-slow: 400ms ease;
+
+  /* ── Z-index ── */
+  --z-sidebar: 100;
+  --z-modal-overlay: 200;
+  --z-modal: 210;
+  --z-popover: 300;
+  --z-toast: 400;
+  --z-bismillah: 10;
+
+  /* ── Current time ── */
+  --time-line: #e74c3c;
+
+  /* ── Focus ring ── */
+  --focus-ring: 2px solid var(--accent);
+}
+
+/* ═══════ DARK THEME ═══════ */
+
+[data-theme="dark"] {
+  --sidebar-bg: #12121f;
+  --cal-bg: #1a1a2e;
+  --cal-grid: #2a2a40;
+  --cal-today-bg: rgba(92, 107, 192, .1);
+  --surface: #242438;
+  --surface-hover: #2c2c44;
+  --surface-border: #3a3a55;
+  --surface-shadow: 0 4px 24px rgba(0,0,0,.3);
+  --text: #e0e0e8;
+  --text-secondary: #b0b0c0;
+  --text-muted: #777790;
+  --bism-color: #d4af5c;
+}
+
+/* ═══════ AMIRI FONT (Google Fonts) ═══════ */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');

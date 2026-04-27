@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark" data-ui-mode="advanced">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1e2134">
+  <title>PlanPilot</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/sidebar.css">
+  <link rel="stylesheet" href="./css/calendar.css">
+  <link rel="stylesheet" href="./css/task-event.css">
+  <link rel="stylesheet" href="./css/modal.css">
+  <link rel="stylesheet" href="./css/popover.css">
+  <link rel="stylesheet" href="./css/settings.css">
+  <link rel="stylesheet" href="./css/analytics.css">
+  <link rel="stylesheet" href="./css/priorities.css">
+  <link rel="stylesheet" href="./css/find-time.css">
+  <link rel="stylesheet" href="./css/weekly-review.css">
+  <link rel="stylesheet" href="./css/groups-view.css">
+</head>
+<body>
+
+  <!-- ═══════════════════ APP SHELL ═══════════════════ -->
+  <div class="app">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-wrap" id="logoWrap" title="PlanPilot"></div>
+        <span class="app-title">PlanPilot</span>
+        <div class="focus-score-badge" id="focusScore" data-tooltip="Score de concentration">--</div>
+      </div>
+
+      <!-- Search -->
+      <div class="sidebar-search" id="sidebarSearch">
+        <input type="text" id="searchInput" class="search-input" placeholder="Rechercher une tache..." autocomplete="off">
+        <button class="search-clear" id="searchClear" title="Effacer">&times;</button>
+      </div>
+
+      <!-- New Task Button -->
+      <div class="sidebar-actions">
+        <button class="btn-primary btn-new-task" id="btnNewTask">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span class="btn-label" data-i18n="sidebar.newTask">Nouvelle tache</span>
+        </button>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="sidebar-tabs" id="sidebarTabs">
+        <button class="tab active" data-filter="scheduled">
+          <span data-i18n="sidebar.scheduled">Planifiees</span>
+          <span class="tab-count" id="countScheduled">0</span>
+        </button>
+        <button class="tab" data-filter="doneScheduling">
+          <span data-i18n="sidebar.doneScheduling">Planif. terminee</span>
+          <span class="tab-count" id="countDoneScheduling">0</span>
+        </button>
+        <button class="tab" data-filter="done">
+          <span data-i18n="sidebar.done">Terminees</span>
+          <span class="tab-count" id="countDone">0</span>
+        </button>
+        <button class="tab" data-filter="habits">
+          <span data-i18n="sidebar.habits">Habitudes</span>
+          <span class="tab-count" id="countHabits">0</span>
+        </button>
+      </div>
+
+      <!-- Task List -->
+      <div class="task-list" id="taskList">
+        <!-- Tasks rendered here by sidebar-view.js -->
+        <div class="empty-state" id="emptyState">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".4">
+            <rect x="3" y="3" width="18" height="18" rx="3"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/>
+          </svg>
+          <p class="empty-title" data-i18n="empty.title">Aucune tache</p>
+          <p class="empty-msg" data-i18n="empty.message">Creez votre premiere tache pour commencer !</p>
+          <p class="swipe-hint" data-i18n="touch.swipeHint">Glissez pour agir</p>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <!-- Row 1: View navigation -->
+        <div class="sidebar-footer-tools">
+          <!-- Settings -->
+          <button class="btn-ghost sidebar-btn sidebar-btn-labeled" id="btnSettings" title="Parametres">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.32 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span class="sidebar-btn-text" data-i18n="sidebar.settings">Parametres</span>
+          </button>
+          <!-- Calendar -->
+          <button class="btn-ghost sidebar-btn sidebar-btn-labeled sidebar-btn-active" id="btnCalendar" title="Calendrier">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="sidebar-btn-text" data-i18n="nav.calendar">Calendrier</span>
+          </button>
+          <!-- Priorities -->
+          <button class="btn-ghost sidebar-btn sidebar-btn-labeled" id="btnPriorities" title="Priorites">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+            <span class="sidebar-btn-text" data-i18n="nav.priorities">Priorites</span>
+          </button>
+          <!-- Groups -->
+          <button class="btn-ghost sidebar-btn sidebar-btn-labeled" id="btnGroups" title="Groupes">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="sidebar-btn-text" data-i18n="nav.groups">Groupes</span>
+          </button>
+        </div>
+        <!-- Row 2: Utility buttons -->
+        <div class="sidebar-footer-tools-extra">
+          <!-- Help -->
+          <button class="btn-ghost sidebar-btn sidebar-btn-labeled" id="btnHelp" title="Aide">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span class="sidebar-btn-text" data-i18n="sidebar.help">Aide</span>
+          </button>
+          <!-- Theme toggle -->
+          <button class="btn-ghost sidebar-btn sidebar-btn-labeled" id="btnTheme" title="Theme">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="themeIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <span class="sidebar-btn-text" data-i18n="settings.theme">Theme</span>
+          </button>
+          <!-- Analytics -->
+          <button class="btn-ghost sidebar-btn sidebar-btn-labeled" id="btnAnalytics" title="Statistiques">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span class="sidebar-btn-text" data-i18n="sidebar.analytics">Statistiques</span>
+          </button>
+          <!-- Weekly Review -->
+          <button class="btn-ghost sidebar-btn sidebar-btn-labeled" id="btnWeeklyReview" title="Bilan hebdomadaire">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+            <span class="sidebar-btn-text" data-i18n="weeklyReview.title">Bilan</span>
+          </button>
+        </div>
+        <!-- Mode Toggle Pill -->
+        <div class="mode-toggle" id="modeToggle">
+          <button class="mode-toggle-segment" data-mode="simple" id="modeSimple">
+            <span data-i18n="settings.uiModes.simple">Simple</span>
+          </button>
+          <button class="mode-toggle-segment active" data-mode="advanced" id="modeAdvanced">
+            <span data-i18n="settings.uiModes.advanced">Avance</span>
+          </button>
+        </div>
+        <!-- Install PWA -->
+        <div class="install-banner" id="installBanner">
+          <button class="btn-secondary btn-sm" id="btnInstall">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span data-i18n="common.install">Installer PlanPilot</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Resize Handle ── -->
+    <div class="resize-handle" id="resizeHandle"></div>
+
+    <!-- ── Main Content ── -->
+    <main class="main-content" id="mainContent">
+
+      <!-- ═══════════════════ BISMILLAH BANNER ═══════════════════ -->
+      <div class="bismillah-banner" id="bismillah">
+        <span class="bism-ornament">&#x2726;</span>
+        &#x0628;&#x0650;&#x0633;&#x0652;&#x0645;&#x0650; &#x0671;&#x0644;&#x0644;&#x0651;&#x064E;&#x0647;&#x0650; &#x0671;&#x0644;&#x0631;&#x0651;&#x064E;&#x062D;&#x0652;&#x0645;&#x064E;&#x0640;&#x0670;&#x0646;&#x0650; &#x0671;&#x0644;&#x0631;&#x0651;&#x064E;&#x062D;&#x0650;&#x064A;&#x0645;&#x0650;
+        <span class="bism-ornament">&#x2726;</span>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="toolbar" id="toolbar">
+        <div class="toolbar-left">
+          <!-- Mobile menu toggle -->
+          <button class="btn-ghost sidebar-toggle" id="btnMenuToggle" title="Menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <!-- Undo -->
+          <button class="btn-ghost" id="btnUndo" title="Annuler (Ctrl+Z)" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          </button>
+          <!-- Redo -->
+          <button class="btn-ghost" id="btnRedo" title="Retablir (Ctrl+Shift+Z)" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"/></svg>
+          </button>
+        </div>
+
+        <div class="toolbar-center">
+          <button class="btn-ghost" id="btnPrev" title="Semaine prec.">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span class="toolbar-date-range" id="dateRange">--</span>
+          <button class="btn-ghost" id="btnNext" title="Semaine suiv.">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="btn-secondary btn-sm" id="btnToday" data-i18n="calendar.today">Aujourd'hui</button>
+          <div class="cal-view-toggle" id="calViewToggle">
+            <button class="cal-view-btn" data-view="day" data-i18n="calendar.viewDay">Jour</button>
+            <button class="cal-view-btn" data-view="3day" data-i18n="calendar.view3Day">3 jours</button>
+            <button class="cal-view-btn active" data-view="week" data-i18n="calendar.viewWeek">Semaine</button>
+          </div>
+        </div>
+
+        <div class="toolbar-right">
+          <div class="toolbar-status-group">
+            <div class="focus-indicator" id="focusIndicator">
+              <span class="focus-dot free"></span>
+              <span class="focus-label" id="focusLabel">Libre</span>
+            </div>
+            <button class="btn-find-time" id="btnFindTime">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="btn-find-time-text">Trouver un créneau</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Find Time Panel (hidden by default) -->
+      <div id="findTimePanel" class="find-time-panel" style="display:none"></div>
+
+      <!-- Calendar Area -->
+      <div class="calendar-container" id="calendarContainer">
+        <!-- Calendar rendered by calendar-view.js -->
+      </div>
+
+      <!-- Settings Panel (hidden by default) -->
+      <div class="settings-panel" id="settingsPanel" style="display:none">
+        <!-- Rendered by settings-view.js -->
+      </div>
+
+      <!-- Analytics Panel (hidden by default) -->
+      <div class="analytics-panel" id="analyticsPanel" style="display:none">
+        <!-- Rendered by analytics-view.js -->
+      </div>
+
+      <!-- Priorities Panel (hidden by default) -->
+      <div class="priorities-panel" id="prioritiesPanel" style="display:none">
+        <!-- Rendered by priorities-view.js -->
+      </div>
+
+      <!-- Weekly Review Panel (hidden by default) -->
+      <div class="weekly-review-panel" id="weeklyReviewPanel" style="display:none">
+        <!-- Rendered by weekly-review.js -->
+      </div>
+
+      <!-- Groups Panel (hidden by default) -->
+      <div class="groups-panel" id="groupsPanel" style="display:none">
+        <!-- Rendered by groups-view.js -->
+      </div>
+    </main>
+  </div>
+
+  <!-- ═══════════════════ MODAL ═══════════════════ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <!-- Rendered by modal-view.js -->
+    </div>
+  </div>
+
+  <!-- ═══════════════════ POPOVER ═══════════════════ -->
+  <div class="popover" id="popover" style="display:none">
+    <!-- Rendered by popover-view.js -->
+  </div>
+
+  <!-- ═══════════════════ ONBOARDING ═══════════════════ -->
+  <div class="onboarding-overlay" id="onboardingOverlay" style="display:none">
+    <!-- Rendered by onboarding.js -->
+  </div>
+
+  <!-- ═══════════════════ TOAST ═══════════════════ -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+  <script src="./js/utils.js"></script>
+  <script src="./js/i18n.js"></script>
+  <script src="./js/store.js"></script>
+  <script src="./js/task-model.js"></script>
+  <script src="./js/history.js"></script>
+  <script src="./js/ics-import.js"></script>
+  <script src="./js/scheduler.js"></script>
+  <script src="./js/conflict-checker.js"></script>
+  <script src="./js/focus-score.js"></script>
+  <script src="./js/dependencies.js"></script>
+  <script src="./js/search.js"></script>
+  <script src="./js/notifications.js"></script>
+  <script src="./js/export-import.js"></script>
+  <script src="./js/templates.js"></script>
+  <script src="./js/sidebar-view.js"></script>
+  <script src="./js/calendar-view.js"></script>
+  <script src="./js/modal-view.js"></script>
+  <script src="./js/popover-view.js"></script>
+  <script src="./js/task-actions.js"></script>
+  <script src="./js/settings-view.js"></script>
+  <script src="./js/analytics-view.js"></script>
+  <script src="./js/priorities-view.js"></script>
+  <script src="./js/habits-view.js"></script>
+  <script src="./js/find-time-view.js"></script>
+  <script src="./js/onboarding.js"></script>
+  <script src="./js/pomodoro.js"></script>
+  <script src="./js/touch-gestures.js"></script>
+  <script src="./js/quick-add.js"></script>
+  <script src="./js/weekly-review.js"></script>
+  <script src="./js/groups-view.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ANALYTICS — PlanPilot
+   Dashboard panel with card layout, bar charts, circular progress,
+   and daily breakdown stacked bars.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ═══════ PANEL ═══════ */
+
+.analytics-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--cal-bg);
+  padding: var(--sp-6);
+}
+
+.analytics-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ═══════ HEADER ═══════ */
+
+.analytics-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-6);
+}
+
+.analytics-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ═══════ GRID ═══════ */
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-5);
+}
+
+@media (max-width: 700px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ═══════ CARD ═══════ */
+
+.analytics-card {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--surface-radius);
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.analytics-card-wide {
+  grid-column: span 2;
+}
+
+@media (max-width: 700px) {
+  .analytics-card-wide {
+    grid-column: span 1;
+  }
+}
+
+.analytics-card-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ═══════ BIG NUMBER ═══════ */
+
+.analytics-big-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.analytics-big-number-muted {
+  color: var(--text-muted);
+}
+
+.analytics-unit {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  margin-left: var(--sp-1);
+  color: var(--text-secondary);
+}
+
+.analytics-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+/* ═══════ CIRCULAR PROGRESS ═══════ */
+
+.analytics-circular-wrap {
+  display: flex;
+  justify-content: center;
+  padding: var(--sp-3) 0;
+}
+
+.analytics-circular {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--accent) calc(var(--progress) * 3.6deg),
+    var(--surface-border) calc(var(--progress) * 3.6deg)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.analytics-circular::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.analytics-circular-value {
+  position: relative;
+  z-index: 1;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ═══════ HORIZONTAL BAR CHART ═══════ */
+
+.analytics-bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.analytics-bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.analytics-bar-label {
+  width: 70px;
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.analytics-bar-track {
+  flex: 1;
+  height: 20px;
+  background: var(--surface-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.analytics-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width var(--tr-slow);
+  min-width: 2px;
+}
+
+.analytics-bar-value {
+  width: 50px;
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+}
+
+/* ═══════ DAILY BREAKDOWN ═══════ */
+
+.analytics-daily {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-2);
+  height: 160px;
+  padding-top: var(--sp-3);
+}
+
+.analytics-daily-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.analytics-daily-bar {
+  flex: 1;
+  width: 100%;
+  max-width: 40px;
+  display: flex;
+  flex-direction: column-reverse;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+}
+
+.analytics-daily-segment {
+  width: 100%;
+  min-height: 2px;
+  transition: height var(--tr-slow);
+}
+
+.analytics-daily-free {
+  background: var(--surface-border);
+}
+
+.analytics-daily-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: var(--sp-2);
+  text-align: center;
+}
+
+/* ═══════ LEGEND ═══════ */
+
+.analytics-daily-legend {
+  display: flex;
+  gap: var(--sp-5);
+  justify-content: center;
+  margin-top: var(--sp-3);
+}
+
+.analytics-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.analytics-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ═══════ DARK THEME ADJUSTMENTS ═══════ */
+
+[data-theme="dark"] .analytics-circular::before {
+  background: var(--surface);
+}

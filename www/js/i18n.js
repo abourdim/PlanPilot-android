@@ -1,0 +1,315 @@
+/* ═══════════════════════════════════════════════════════════════════
+   I18N — PlanPilot
+   Embedded French translations so the app works without fetch
+   (file:// protocol, GitHub Pages, offline, etc.)
+   ═══════════════════════════════════════════════════════════════════ */
+
+const I18n = (() => {
+
+  let _lang = 'fr';
+  let _loaded = false;
+
+  /* ── Built-in French strings (always available) ── */
+  const _builtIn = {
+    fr: {
+      app: { name: "PlanPilot" },
+      sidebar: {
+        newTask: "Nouvelle tache", scheduled: "Planifiees",
+        doneScheduling: "Planif. terminee", done: "Terminees",
+        habits: "Habitudes", settings: "Parametres",
+        analytics: "Statistiques", help: "Aide", search: "Rechercher"
+      },
+      modal: {
+        title: { create: "Cr\u00e9er une t\u00e2che", edit: "Modifier la t\u00e2che" },
+        name: "Nom", namePlaceholder: "Nom de la tache...",
+        priority: "Priorite", duration: "Duree (min)",
+        splitUp: "Decouper en sessions", minSession: "Duree min. session (min)",
+        maxSession: "Duree max. session (min)",
+        schedulingHours: "Heures de planification",
+        schedulingType: { working: "Heures de travail (9h-17h)", personal: "Heures personnelles (17h-22h)", custom: "Toute la journee (9h-22h)" },
+        startHour: "Heure de debut", endHour: "Heure de fin",
+        dueDate: "Echeance", startDate: "Debut",
+        startMode: "Mode de demarrage",
+        startModes: { auto: "Automatique", manual: "Manuel" },
+        energy: "Niveau d'energie",
+        energyLevels: { high: "Haute energie", low: "Basse energie", any: "Indifferent" },
+        dependsOn: "Depend de...", dependsOnNone: "Aucune dependance",
+        notes: "Notes", notesPlaceholder: "Notes supplementaires...",
+        visibility: "Visibilite",
+        visibilityOptions: { busy: "Occupe", free: "Libre" },
+        upNext: "Prioritaire", habit: "Tache recurrente (habitude)",
+        habitFrequency: "Frequence (fois/semaine)",
+        save: "Enregistrer", cancel: "Annuler", delete: "Supprimer"
+      },
+      actions: {
+        start: "Demarrer", stop: "Arreter", restart: "Relancer",
+        lock: "Verrouiller", unlock: "Deverrouiller",
+        addTime: "Ajouter du temps", logWork: "Journaliser",
+        done: "Termine", delete: "Supprimer",
+        confirm: "Confirmer ?", edit: "Modifier"
+      },
+      settings: {
+        title: "Parametres", defaults: "Valeurs par defaut",
+        sections: {
+          scheduling: "Planification",
+          prioritiesGroups: "Priorites et groupes",
+          appearance: "Apparence",
+          notifications: "Notifications",
+          energy: "Energie",
+          data: "Donnees",
+          danger: "Zone dangereuse"
+        },
+        defaultPriority: "Priorite par defaut",
+        defaultDuration: "Duree par defaut (min)",
+        defaultSplitUp: "Decouper par defaut",
+        defaultMinSession: "Session min par defaut (min)",
+        defaultMaxSession: "Session max par defaut (min)",
+        defaultSchedulingHours: "Heures de planif. par defaut",
+        defaultStartDelay: "Delai de demarrage (min)",
+        defaultDueDateOffset: "Decalage date limite (jours)",
+        defaultVisibility: "Visibilite par defaut",
+        startMode: "Mode de demarrage",
+        theme: "Theme", themes: { light: "Clair", dark: "Sombre" },
+        uiMode: "Mode d'interface",
+        uiModes: { simple: "Simple", advanced: "Avance" },
+        simpleMode: "Mode simple",
+        advancedMode: "Mode avance",
+        language: "Langue", notifications: "Notifications",
+        notificationsEnabled: "Activer les notifications",
+        notificationLead: "Delai de notification (min)",
+        energy: "Energie", peakStart: "Debut heures de pointe",
+        peakEnd: "Fin heures de pointe",
+        export: "Exporter les donnees", import: "Importer les donnees",
+        autoBackup: "Sauvegarde auto (24h)", close: "Fermer",
+        dangerZone: "Zone dangereuse",
+        resetAll: "Reinitialiser toutes les donnees",
+        resetConfirm: "Supprimer toutes les taches, groupes et parametres ? Cette action est irreversible."
+      },
+      search: { placeholder: "Rechercher une tache...", noResults: "Aucune tache trouvee" },
+      calendar: { today: "Aujourd'hui", prev: "Semaine prec.", next: "Semaine suiv.", pinned: "Epingle", unpin: "Desepingler", viewDay: "Jour", view3Day: "3 jours", viewWeek: "Semaine" },
+      analytics: {
+        title: "Statistiques", focusTime: "Temps de concentration",
+        focusTimeThisWeek: "Temps de concentration cette semaine",
+        completionRate: "Taux de realisation",
+        timeByPriority: "Temps par priorite",
+        rescheduled: "Temps replanifie",
+        dailyBreakdown: "Repartition quotidienne",
+        focusScore: "Score de concentration",
+        weeklyTrend: "Tendance hebdomadaire", close: "Fermer",
+        hours: "h", tasks: "taches", completed: "terminees",
+        scheduled: "planifiees", noData: "Aucune donnee cette semaine",
+        taskTime: "Temps taches", freeTime: "Temps libre",
+        days: { mon: "Lun", tue: "Mar", wed: "Mer", thu: "Jeu", fri: "Ven", sat: "Sam", sun: "Dim" }
+      },
+      onboarding: {
+        welcome: "Bienvenue sur PlanPilot",
+        welcomeDesc: "Votre gestionnaire de taches intelligent avec planification automatique.",
+        step1: "Creez votre premiere tache avec le bouton ci-dessus.",
+        step2: "Vos taches sont automatiquement planifiees sur le calendrier.",
+        step3: "Gerez vos taches avec les actions disponibles sur chaque evenement.",
+        finish: "C'est parti !", skip: "Passer",
+        keepSamples: "Garder les exemples ?", yes: "Oui", no: "Non"
+      },
+      priority: { p1: "Critique", p2: "Haute", p3: "Moyenne", p4: "Basse" },
+      status: { scheduled: "Planifiee", doneScheduling: "Planif. terminee", done: "Terminee" },
+      empty: { title: "Aucune tache", message: "Creez votre premiere tache pour commencer !", cta: "Nouvelle tache" },
+      footer: { poweredBy: "propulse par" },
+      common: { on: "Actif", off: "Inactif", yes: "Oui", no: "Non", undo: "Annuler", redo: "Retablir", install: "Installer PlanPilot", next: "Suivant" },
+      conflict: { warning: "Attention", tasksPushed: "Les taches suivantes pourraient depasser leur date limite :" },
+      notification: { upcoming: "Tache a venir", startsIn: "commence dans" },
+      popover: { remaining: "restant", locked: "Verrouille", active: "En cours" },
+      languages: { fr: "Francais", en: "English", ar: "العربية" },
+      export: { success: "Donnees exportees avec succes", error: "Echec de l'exportation" },
+      import: { success: "Donnees importees avec succes", error: "Echec de l'importation" },
+      dependency: { circular: "Dependance circulaire detectee", chain: "Chaine de dependance" },
+      habits: { thisWeek: "cette semaine" },
+      findTime: {
+        title: "Trouver un creneau",
+        duration: "Duree",
+        mins: "min",
+        hr: "h",
+        hrs: "h",
+        other: "Autre",
+        results: "Creneaux disponibles",
+        noResults: "Aucun creneau trouve dans les 14 prochains jours",
+        today: "Aujourd'hui",
+        tomorrow: "Demain"
+      },
+      focus: {
+        now: "Maintenant",
+        free: "Libre",
+        inProgress: "En cours"
+      },
+      ics: {
+        sectionTitle: "Emploi du temps",
+        importButton: "Importer emploi du temps (.ics)",
+        successCount: "{count} evenements importes",
+        noEvents: "Aucun evenement trouve dans le fichier",
+        error: "Erreur lors de l'importation du fichier ICS"
+      },
+      templates: {
+        label: "Modele",
+        none: "Aucun modele",
+        manageTitle: "Gerer les modeles",
+        add: "Ajouter un modele",
+        namePrompt: "Nom du modele",
+        durationPrompt: "Duree (en minutes)"
+      },
+      weeklyReview: {
+        title: "Bilan hebdomadaire",
+        focusTime: "Temps de concentration",
+        completed: "Taches terminees",
+        slipped: "Taches en retard",
+        nextWeek: "Charge semaine prochaine",
+        noCompleted: "Aucune tache terminee cette semaine",
+        noSlipped: "Aucune tache en retard",
+        noUpcoming: "Aucune tache prevue",
+        copy: "Copier le resume",
+        copied: "Resume copie dans le presse-papiers",
+        copyError: "Erreur lors de la copie",
+        due: "Echeance"
+      },
+      priorities: {
+        title: "Priorites",
+        critical: "Critique",
+        high: "Haute priorite",
+        medium: "Priorite moyenne",
+        low: "Priorite basse",
+        noItems: "Aucun element",
+        tasks: "Taches",
+        collapse: "Reduire",
+        expand: "Developper",
+        due: "Echeance",
+        next: "Prochain",
+        duration: "Duree",
+        dragHint: "Glissez-deposez pour changer la priorite",
+        newTask: "Nouvelle tache"
+      },
+      touch: {
+        swipeHint: "Glissez pour agir",
+        swipeRightDone: "Glisser a droite: Termine",
+        swipeLeftEdit: "Glisser a gauche: Modifier",
+        longPressMenu: "Appui long: Menu"
+      },
+      taskDetail: {
+        remaining: "restant",
+        edit: "Modifier",
+        duplicate: "Dupliquer",
+        delete: "Supprimer",
+        confirmDelete: "Supprimer cette tache ?",
+        start: "Demarrer",
+        done: "Terminer",
+        viewInCalendar: "Voir dans le calendrier"
+      },
+      pomodoro: {
+        work: "Travail",
+        break: "Pause",
+        pause: "Pause",
+        resume: "Reprendre",
+        stop: "Arreter",
+        breakNotify: "Pause ! 5 min de repos",
+        workNotify: "C'est reparti !",
+        workDuration: "Duree de travail (min)",
+        breakDuration: "Duree de pause (min)",
+        title: "Pomodoro",
+        completed: "pomodoros termines"
+      },
+      groups: {
+        title: "Groupes",
+        add: "Ajouter un groupe",
+        maxReached: "Maximum 8 groupes",
+        name: "Nom du groupe",
+        none: "Aucun",
+        all: "Tous",
+        noGroup: "Sans groupe",
+        byPriority: "Par priorite",
+        byGroup: "Par groupe",
+        timeByGroup: "Temps par groupe",
+        deleteConfirm: "Supprimer ce groupe ?",
+        editGroup: "Renommer le groupe",
+        renameGroup: "Renommer le groupe",
+        addColumn: "Ajouter un groupe",
+        newTask: "Nouvelle tache"
+      },
+      nav: {
+        calendar: "Calendrier",
+        priorities: "Priorites",
+        groups: "Groupes"
+      },
+      quickAdd: {
+        placeholder: "Ex: Anatomie 2h due vendredi",
+        created: "Tache creee"
+      }
+    }
+  };
+
+  /** Deep merge: base keys preserved, overlay keys override */
+  function _deepMerge(base, overlay) {
+    const result = Object.assign({}, base);
+    for (const key of Object.keys(overlay)) {
+      if (overlay[key] && typeof overlay[key] === 'object' && !Array.isArray(overlay[key])
+          && base[key] && typeof base[key] === 'object') {
+        result[key] = _deepMerge(base[key], overlay[key]);
+      } else {
+        result[key] = overlay[key];
+      }
+    }
+    return result;
+  }
+
+  // Start with built-in French loaded
+  let _strings = _builtIn.fr;
+  _loaded = true;
+
+  /** Load language JSON file (overrides built-in if successful) */
+  async function load(lang) {
+    // If we have a built-in for this language, use it immediately
+    if (_builtIn[lang]) {
+      _strings = _builtIn[lang];
+      _lang = lang;
+      _loaded = true;
+    }
+
+    // Try to fetch the full file (merges with built-in so new keys aren't lost)
+    try {
+      const res = await fetch(`./lang/${lang}.json`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const fetched = await res.json();
+      _strings = _deepMerge(_strings, fetched);
+      _lang = lang;
+      _loaded = true;
+    } catch (err) {
+      // Fetch failed — built-in is already active, no problem
+      console.info(`[i18n] Using built-in ${_lang} strings (fetch unavailable)`);
+    }
+
+    document.documentElement.lang = _lang;
+    document.documentElement.dir = (_lang === 'ar') ? 'rtl' : 'ltr';
+    document.dispatchEvent(new CustomEvent('i18n:changed', { detail: { lang: _lang } }));
+  }
+
+  /**
+   * Translate a key. Supports dot notation: t('modal.title.create')
+   * Falls back to key if not found.
+   */
+  function t(key) {
+    const parts = key.split('.');
+    let val = _strings;
+    for (const p of parts) {
+      if (val && typeof val === 'object' && p in val) {
+        val = val[p];
+      } else {
+        return key; // fallback
+      }
+    }
+    return typeof val === 'string' ? val : key;
+  }
+
+  /** Get current language */
+  function currentLang() { return _lang; }
+
+  /** Check if loaded */
+  function isLoaded() { return _loaded; }
+
+  return { load, t, currentLang, isLoaded };
+})();
